@@ -26,9 +26,18 @@ void switchesInit(void) {
 // Returns true if a new value has been found
 // Simplest version assumes there is always a new value.!
 enum bool switchesGet(uc_8 *value){
-    BusAddress=SwitchesAddr;
+   	static int i = 0;
+   	uc_8 lastValueRead;
+   	BusAddress=SwitchesAddr;
     BusRead();
-    *value = BusData;
+   	if (lastValueRead == BusData)
+   	{
+   		return false;
+   	}
+   	else
+   	{
+   		*value = BusData;
+   	}
     return true;
 }
 // ************************************************************************

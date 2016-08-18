@@ -16,6 +16,7 @@ const int Seg2 = 1;
 
 uc_8 temp; // Global for debug testing only
 uc_8 a;		//debug flag 3
+//uc_8 BIT7 = 10000000; //BIT7 is a defined macro
 
 void main(void) {
 
@@ -35,6 +36,7 @@ sevenSegInit(); // 7segment initialisation
 
 		// to show the value of the boolean variable flag3 
 	    // returned by one of the seven segment display
-	    flag2 = LEDsPut(~temp);
+	    temp = temp&(~BIT7);
+	    flag2 = LEDsPut(~(temp|~flag3<<7));
 	} /* loop forever */
 }
