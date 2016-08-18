@@ -15,6 +15,7 @@ const int Seg1 = 0;
 const int Seg2 = 1;
 
 uc_8 temp; // Global for debug testing only
+uc_8 a;		//debug flag 3
 
 void main(void) {
 
@@ -29,12 +30,11 @@ sevenSegInit(); // 7segment initialisation
 	    flag1 = switchesGet(&temp);
 	    
 	    flag3 = sevenSegPut(Seg1, temp);
+	    flag4 = sevenSegPut(Seg2, temp);
+	    a = flag3; 
 
-	    // to show the value of the boolean variable flag3 
+		// to show the value of the boolean variable flag3 
 	    // returned by one of the seven segment display
 	    flag2 = LEDsPut(~temp);
-
-	    flag4 = sevenSegPut(Seg2, temp);
-
 	} /* loop forever */
 }
