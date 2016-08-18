@@ -27,8 +27,13 @@ sevenSegInit(); // 7segment initialisation
 
 	for(;;) {
 	    flag1 = switchesGet(&temp);
-	    flag2 = LEDsPut(~temp);
+	    
 	    flag3 = sevenSegPut(Seg1, temp);
+
+	    // to show the value of the boolean variable flag3 
+	    // returned by one of the seven segment display
+	    flag2 = LEDsPut(~temp);
+
 	    flag4 = sevenSegPut(Seg2, temp);
 
 	} /* loop forever */
