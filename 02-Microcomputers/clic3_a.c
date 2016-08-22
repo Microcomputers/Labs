@@ -27,18 +27,34 @@ void switchesInit(void) {
 // Simplest version assumes there is always a new value.!
 enum bool switchesGet(uc_8 *value){
    	static int i = 0;
-   	uc_8 lastValueRead;
-   	BusAddress=SwitchesAddr;
-    BusRead();
-   	if (lastValueRead == BusData)
+   	static uc_8 lastValue, currentValue;
+
+   	BusAddress=SwitchesAddr; //set the switch address
+    BusRead(); 				 // Read from bus
+    currentValue = BusData;  //
+    /* ******* Logic ******* */
+   	if (i == 0)
    	{
-   		return false;
+   		lastValue = currentValue; 	// save stat
+   		*value = lastValue;	 		// write changes
+   		// remember next time is not last time
+   		i = 1;				 		// change the counter
+   		return true;
    	}
    	else
    	{
-   		*value = BusData;
+   		//compare if lastValue is currentValue
+   		if (lastValue == currentValue)
+   		{
+   			return false;
+   		}
+   		else
+   		{
+   			lastValue = currentValue;
+   			*value = lastValue;
+    		return true;
+   		}
    	}
-    return true;
 }
 // ************************************************************************
 
