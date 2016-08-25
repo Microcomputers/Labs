@@ -37,6 +37,10 @@ flag = LEDsPut(~count); // display initial value
 		    flag2 = LEDsPut(~count);
 		    flag3 = sevenSegPut(Seg1, count);
 		    flag4 = sevenSegPut(Seg2, count);
+		    if (count == 15)
+		    {
+		    	count = 0;
+		    }
 		}
 		for (int i = 0; i < 100; ++i)
 		{
