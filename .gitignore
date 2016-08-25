@@ -1,2 +1,30 @@
 
 *.pdf
+
+#Project files
+*.dep
+*.ewd
+*.ewp
+*.ewt
+*.eww
+*.txt
+
+#Debug/Exe
+*.d43
+
+#Debug/Obj
+*.pdb
+*.pdb.browes
+*.r43
+*.pbi
+*.pbi.cout
+
+# IDE settings
+*.dbgdt
+*.Debug.cspy.bat
+*.dni
+*.wsdt
+*.wspos
+
+#file
+*/Debug
