@@ -9,7 +9,9 @@ void main(void) {
 // uc_8 temp;
 enum bool flag;
 //keypad values
-ui_16 val1, val2, total;
+uc_8 val1, val2, total;
+//over flow segments
+uc_8 lSeg, rSeg;
 // System Initialisation
 Initialise();
 // Peripheral Initialisation
@@ -20,26 +22,49 @@ sevenSegInit();
 for(;;) {
 	if(keypadGet(&temp))
 	{
-		if (i == 1)
+		if (temp <= 9)	
 		{
-			val1 = ~temp;
-			flag = LEDsPut(~temp);
-			flag = sevenSegPut(DispID1, val1);	
-			i = 2;		
+			if (i == 1)
+			{
+				val1 = temp;
+				flag = LEDsPut(~temp);
+					
+				i = 2;		
+			}
+			else if (i == 2)
+			{
+				val2 = temp;
+				flag = LEDsPut(~temp);
+				
+				i = 3;
+			}
+			else if (i == 3)
+			{
+				//stuff to reset the displays
+				i = 1;
+			}
+			total = val1 + val2;
+			if (total < 10)
+			{
+				total = total / 10;
+				flag = sevenSegPut(DispID2, 0);
+				flag = sevenSegPut(DispID1, total);
+			}
+			else if (total >= 10)
+			{
+				lSeg = total / 10;
+				rSeg = total % 10;
+				flag = sevenSegPut(DispID2, rSeg);
+				flag = sevenSegPut(DispID1, lSeg);
+			}
 		}
-		else if (i == 2)
-		{
-			val2 = ~temp;
-			flag = LEDsPut(~temp);
-			flag = sevenSegPut(DispID1, val2);
-			i = 1;
-		}
+
 		//total = val1 + val2;
 		//flag = sevenSegPut(DispID1, total);
 		//flag = sevenSegPut(DispID2, total);
 		//i = 1;
 
-	}
-} /* loop forever */
+		}
+	} /* loop forever */
   /* please make sure that you never leave main */
 }
