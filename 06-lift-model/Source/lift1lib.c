@@ -8,7 +8,7 @@ For use in polling based programs.
 /* Globals for general lift program.
 Declare as external when used in the main program
 */
-ui_16 BusAddress,BusData;
+extern ui_16 BusAddress,BusData;
 uc_8 Stimulus1, LedData1, CommandLine1[16];
 uc_8 Lift1, MovingStatus1; /* Holds motor control info  */
 
@@ -65,23 +65,23 @@ Always returns true. Some delay needed between writes to bus!
 */
 enum bool WriteLed1 (uc_8 LEDAddress1, uc_8 LEDData1)
 {
-char LedByte1;
-si_32 DelayConst1;
-LedByte1=LEDAddress1|LEDData1|MovingStatus1;
-BusAddress=Lift1Address;  
-BusData=LedByte1;
-BusWrite();
-DelayConst1=100;
-Delay1(DelayConst1);
-LedByte1=LedByte1|LEDLatchOn;            /*Activate Latch signal*/
-BusData=LedByte1;
-BusWrite();
-Delay1(DelayConst1);
-LedByte1=LedByte1&LEDLatchOff;           /*Mask Latch signal*/
-BusData=LedByte1;
-BusWrite();
-Delay1(DelayConst1);
-return true;
+  char LedByte1;
+  si_32 DelayConst1;
+  LedByte1=LEDAddress1|LEDData1|MovingStatus1;
+  BusAddress=Lift1Address;  
+  BusData=LedByte1;
+  BusWrite();
+  DelayConst1=100;
+  Delay1(DelayConst1);
+  LedByte1=LedByte1|LEDLatchOn;            /*Activate Latch signal*/
+  BusData=LedByte1;
+  BusWrite();
+  Delay1(DelayConst1);
+  LedByte1=LedByte1&LEDLatchOff;           /*Mask Latch signal*/
+  BusData=LedByte1;
+  BusWrite();
+  Delay1(DelayConst1);
+  return true;
 }
 
 /**********************************************************************/
