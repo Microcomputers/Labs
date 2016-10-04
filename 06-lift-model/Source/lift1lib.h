@@ -25,6 +25,9 @@ and the MSP430 CLIC3 board. For use in polling based programs.
 
 #define Lift1Address (0x4020)
 
+#define LEDon 0x20
+#define LEDoff 0x00
+
 // Initialise functions
 void Initialise(void);
 void BusRead(void);
@@ -57,9 +60,6 @@ LEDState can take two values LEDOn or LEDOff
 Always returns true 
 */
 
-#define LEDOn     0x020
-#define LEDOff    0x000
-
 enum bool WriteLed1(uc_8 LEDSelect, uc_8 LEDState);
 
 // Open and close lift door with delays built in
@@ -72,4 +72,6 @@ void CloseDoor1 (void);
 void Delay1();
 void Delay2(int count);
 
+// Turn LEDs ON, on start up
+void turnLEDsON();
 #endif

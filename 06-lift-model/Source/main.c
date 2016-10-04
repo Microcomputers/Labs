@@ -1,8 +1,7 @@
 //#include <msp430fr5739.h>
 #include "lift1lib.h"
 
-#define LEDon 0x20
-#define LEDoff 0x00
+
 
 int main()
 {
