@@ -18,6 +18,9 @@ int main()
 	//5)Switching on or off a specified LED associated with buttons etc
 	//6)Delaying an approximate time period
 	//7)Opening and closing the lift doors (simulated by time delay operations)
+    turnLEDsON();
+    Delay1();
+    turnLEDsOFF();
     while (1)
     {
 	/*

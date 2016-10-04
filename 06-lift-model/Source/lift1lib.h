@@ -72,6 +72,9 @@ void CloseDoor1 (void);
 void Delay1();
 void Delay2(int count);
 
+//This two functions test LEDs
 // Turn LEDs ON, on start up
 void turnLEDsON();
+// Turn LEDs OFF, on start up
+void turnLEDsOFF();
 #endif

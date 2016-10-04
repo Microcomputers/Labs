@@ -176,3 +176,11 @@ void turnLEDsON()
 		WriteLed1(i, LEDon);
 	}
 }
+
+void turnLEDsOFF()
+{
+	for (int i = 0; i < sizeof(LEDAddress); ++i)
+	{
+		WriteLed1(i, LEDoff);
+	}
+}
