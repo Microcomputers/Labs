@@ -144,8 +144,25 @@ return (floorSet);
 
 /**********************************************************************/
 // Software time delay for simplicity here.
-// Assume one cycle of the loop takes approximately 0.1microsecs
+// Assume one cycle of the loop takes approximately 0.1microsecs  0.0001 mS * x ==> 100 mS
+/*
 void  Delay1(ui_32 DelayConst1){
    ui_32 i1;
    for (i1=0;i1<DelayConst1;i1++){}
-  }
+}
+*/
+//100 ms delay
+void  Delay1()
+{
+	ui_32 DelayConst1 = 1000000;
+	ui_32 i1;
+	for (i1=0;i1<DelayConst1;i1++){}
+}
+
+void Delay2(int count)
+{
+	for (int i = 0; i < count; ++i)
+	{
+		Delay1();
+	}
+}

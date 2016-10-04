@@ -69,6 +69,7 @@ void CloseDoor1 (void);
 /* Time delay function */
 // Software time delay for simplicity here.
 // Assume one cycle of the loop takes approximately 0.1microsecs
-void  Delay1(ui_32 DelayConst1);
+void Delay1();
+void Delay2(int count);
 
 #endif
