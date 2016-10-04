@@ -173,7 +173,7 @@ void turnLEDsON()
 {
 	for (int i = 0; i < sizeof(LEDAddress); ++i)
 	{
-		WriteLed1(i, LEDon);
+		WriteLed1(LEDAddress[i], LEDon);
 	}
 }
 
@@ -181,6 +181,6 @@ void turnLEDsOFF()
 {
 	for (int i = 0; i < sizeof(LEDAddress); ++i)
 	{
-		WriteLed1(i, LEDoff);
+		WriteLed1(LEDAddress[i], LEDoff);
 	}
 }
