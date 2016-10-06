@@ -18,6 +18,7 @@ Uses:
 Busread, BusWrite, Initialise, clic3_b.c
 */
 #include "clic3.h"
+#include "TimeTest.h"
 
 // Global variables for transfer from ISR to main program
 enum bool switchesFlag = false, keypadFlag = false;
@@ -27,12 +28,16 @@ uc_8 switchesValue,keypadValue;
 #pragma vector=TIMER1_A1_VECTOR
 __interrupt void TIMER1_A1_ISR( void );
 
+static TimeTest TT = {0, 0, 65535, 0, 0, 0, 0};
+
 void main (void) 
 {
 	uc_8 segID = 0;
 	enum bool temp;
-
-	// System initialisation
+        TimeTestInit(); //start the timer
+        TimeTestEnd(&TT);
+        TimeTestStart(&TT);
+        // System initialisation
 	Initialise();
 	// Peripheral initialisation
 	switchesInit();
@@ -44,8 +49,8 @@ void main (void)
 	P4DIR |=BIT3; // Get a probe point
 	P4OUT &= ~BIT3; // clear it to start low
 	// Activate the Timer1 overflow interrupt for polling
-    TA1CTL_bit.TAIFG = 0; // clean up any pending interrupts
-    TA1CTL_bit.TAIE = 1; // enable the interrupt for the timer
+        TA1CTL_bit.TAIFG = 0; // clean up any pending interrupts
+        TA1CTL_bit.TAIE = 1; // enable the interrupt for the timer
 	// ****************************************************************
 
 	__enable_interrupt(); // Allow the interrupt to work
@@ -65,16 +70,23 @@ void main (void)
 			segID ^= 0x01;
 			keypadFlag = false;
 		}
-
+                
 	   // Anything else to be done
 	} // end while (true)
 }
 
 __interrupt void TIMER1_A1_ISR( void )
 { // Foreground task get any inputs every 1msecs
-	P4OUT ^= BIT3; // CRO display
-	switchesFlag = switchesGet(&switchesValue);
-	keypadFlag = keypadGet(&keypadValue);
-	TA1CTL_bit.TAIFG = 0;
-	P4OUT ^= BIT3;
+        static int counter = 0;
+	if (counter == 10)
+        {
+          P4OUT ^= BIT3; // CRO display
+          switchesFlag = switchesGet(&switchesValue);
+          keypadFlag = keypadGet(&keypadValue);
+          TA1CTL_bit.TAIFG = 0;
+          P4OUT ^= BIT3;
+          counter = 0;
+        }
+        counter++;
+        
 }
