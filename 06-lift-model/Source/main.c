@@ -3,7 +3,7 @@
 
 int main()
 {
-    uc_8 buttonstat, old_lvl, current_lvl;
+    uc_8 buttonstat, old_lvl, current_lvl, floorID;
 	//1)Initialising the lift system
     Initialise();
 	liftInit();
@@ -21,16 +21,57 @@ int main()
     Delay1(2500);
     turnLEDsOFF();
     moveInitiPos();	//move lift cage to initial pos
+    //Delay1(2500);
     
     while (1)
     {
+      
+        uc_8 level;
+        int c = 0;
+        
+      
+      floorGet(&floorID);
+      
+        if(buttonGet(&buttonstat))
+        {
+          while(floorID != buttonstat)
+          {
+            if(buttonstat > floorID)
+            {
+              lift1Up();
+              while(floorGet(&floorID)==false){}
+            }
+            
+              if(buttonstat < floorID)
+            {
+              lift1Down();
+              while(floorGet(&floorID)==false){}
+            }
+            
+          }
+          lift1Stop();
+        
+           }
+          
+          
+        
+        }
+      
+}
+      
+      
+      
+      
+      
+      
+      
 	/*
 	if(floorGet(&current_lvl))
 	{
 		
 	}
 	*/
-		if(buttonGet(&buttonstat))
+		/*if(buttonGet(&buttonstat))
 		{
 			WriteLed1(buttonstat, LEDon);
 			if (buttonstat%2==0)
@@ -50,9 +91,10 @@ int main()
 				while(!floorGet(&current_lvl)){}
 				lift1Stop();
 			}
-		}
+		}*/
 	//Delay1(25000000);
-	WriteLed1(buttonstat, LEDoff);
-    }
-	return 0;
-}
+	//WriteLed1(buttonstat, LEDoff);
+      
+      //WriteLed1(7, LEDon);
+    
+
