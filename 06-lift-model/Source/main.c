@@ -1,9 +1,13 @@
 //#include <msp430fr5739.h>
 #include "lift1lib.h"
 
+#define MAX_BUTTONS 100
+
 int main()
 {
-    uc_8 buttonstat, old_lvl, current_lvl, floorID;
+    uc_8 button_current, button_previous, old_lvl, current_lvl, floorID;
+    uc_8 button_store[MAX_BUTTONS];
+    int i = 0;
 	//1)Initialising the lift system
     Initialise();
 	liftInit();
@@ -29,34 +33,45 @@ int main()
         uc_8 level;
         int c = 0;
         
-      
-      floorGet(&floorID);
-      
-        if(buttonGet(&buttonstat))
+        if (floorGet(&floorID))
         {
-          while(floorID != buttonstat)
-          {
-            if(buttonstat > floorID)
-            {
-              lift1Up();
-              while(floorGet(&floorID)==false){}
-            }
-            
-              if(buttonstat < floorID)
-            {
-              lift1Down();
-              while(floorGet(&floorID)==false){}
-            }
-            
-          }
-          lift1Stop();
-        
-           }
-          
-          
-        
+        	buttonGet(&button_current);
+        	if (button_current != button_previous)
+    		{
+    			button_previous = button_current;
+    			button_store[i] = button_previous;
+    			i++;
+    		}
+			while(floorID != button_store[0])
+			{
+				if(button_store[0] > floorID)
+				{
+					lift1Up();
+					while(floorGet(&floorID)==false){}
+				}
+				if(button_store[0] < floorID)
+				{
+					lift1Down();
+					while(floorGet(&floorID)==false){}
+				}
+			}
+			lift1Stop();
+			for (int i = 0; i < MAX_BUTTONS; ++i)
+			{
+				button_store[i] = button_store[i+1];
+			}
         }
-      
+        else
+        {
+        	buttonGet(&button_current);
+        	if (button_current != button_previous)
+    		{
+    			button_previous = button_current;
+    			button_store[i] = button_previous;
+    			i++;
+    		}	
+        }
+    }    
 }
       
       
@@ -71,10 +86,10 @@ int main()
 		
 	}
 	*/
-		/*if(buttonGet(&buttonstat))
+		/*if(buttonGet(&button_current))
 		{
-			WriteLed1(buttonstat, LEDon);
-			if (buttonstat%2==0)
+			WriteLed1(button_current, LEDon);
+			if (button_current%2==0)
 			{
 				lift1Up();
 				//Delay1(25000000);
@@ -93,7 +108,7 @@ int main()
 			}
 		}*/
 	//Delay1(25000000);
-	//WriteLed1(buttonstat, LEDoff);
+	//WriteLed1(button_current, LEDoff);
       
       //WriteLed1(7, LEDon);
     
