@@ -35,6 +35,8 @@ and the MSP430 CLIC3 board. For use in polling based programs.
 #define bottom 0x6
 #define top 0x7
 
+#define MAX_BUTTONS 100
+
 // Initialise functions
 void Initialise(void);
 void BusRead(void);
@@ -89,4 +91,8 @@ void turnLEDsOFF();
 //detect lift pos on stat up
 //move to specific location
 void moveInitiPos();
+
+//button process
+void buttonProcess();
+void buttonMoveIndex();
 #endif

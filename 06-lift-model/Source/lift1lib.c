@@ -221,3 +221,27 @@ void moveInitiPos()
         }
         lift1Stop();
 }
+
+extern uc_8 button_current, button_previous;
+extern uc_8 button_store[MAX_BUTTONS];
+static int i = 0;
+
+void buttonProcess()
+{
+	buttonGet(&button_current);
+	WriteLed1(button_current, LEDon);
+	if (button_current != button_previous)
+	{
+		button_previous = button_current;
+		button_store[i] = button_previous;
+		i++;
+	}	
+}
+
+void buttonMoveIndex()
+{
+	for (int i = 0; i < MAX_BUTTONS; ++i)
+	{
+		button_store[i] = button_store[i+1];
+	}
+}

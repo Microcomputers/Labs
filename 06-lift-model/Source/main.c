@@ -1,13 +1,13 @@
 //#include <msp430fr5739.h>
 #include "lift1lib.h"
 
-#define MAX_BUTTONS 100
+
 
 int main()
 {
-    uc_8 button_current, button_previous, old_lvl, current_lvl, floorID;
+    uc_8 button_current, button_previous, level_old, level_current, floorID;
     uc_8 button_store[MAX_BUTTONS];
-    int i = 0;
+    
 	//1)Initialising the lift system
     Initialise();
 	liftInit();
@@ -35,41 +35,29 @@ int main()
         
         if (floorGet(&floorID))
         {
-        	buttonGet(&button_current);
-        	if (button_current != button_previous)
-    		{
-    			button_previous = button_current;
-    			button_store[i] = button_previous;
-    			i++;
-    		}
+
+        	buttonProcess();
 			while(floorID != button_store[0])
 			{
 				if(button_store[0] > floorID)
 				{
 					lift1Up();
 					while(floorGet(&floorID)==false){}
+					WriteLed1(button_store[0], LEDoff);
 				}
 				if(button_store[0] < floorID)
 				{
 					lift1Down();
 					while(floorGet(&floorID)==false){}
+					WriteLed1(button_store[0], LEDoff);
 				}
 			}
 			lift1Stop();
-			for (int i = 0; i < MAX_BUTTONS; ++i)
-			{
-				button_store[i] = button_store[i+1];
-			}
+			buttonMoveIndex();
         }
         else
         {
-        	buttonGet(&button_current);
-        	if (button_current != button_previous)
-    		{
-    			button_previous = button_current;
-    			button_store[i] = button_previous;
-    			i++;
-    		}	
+			buttonProcess();	
         }
     }    
 }
@@ -81,7 +69,7 @@ int main()
       
       
 	/*
-	if(floorGet(&current_lvl))
+	if(floorGet(&level_current))
 	{
 		
 	}
@@ -95,7 +83,7 @@ int main()
 				//Delay1(25000000);
 				//lift1Stop();
 
-				while(!floorGet(&current_lvl)){}
+				while(!floorGet(&level_current)){}
 				lift1Stop();
 			}
 			else
@@ -103,7 +91,7 @@ int main()
 				lift1Down();
 				//Delay1(25000000);
 				//lift1Stop();
-				while(!floorGet(&current_lvl)){}
+				while(!floorGet(&level_current)){}
 				lift1Stop();
 			}
 		}*/
