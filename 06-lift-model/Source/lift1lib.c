@@ -8,13 +8,10 @@ For use in polling based programs.
 /* Globals for general lift program.
 Declare as external when used in the main program
 */
+//extern
 ui_16 BusAddress,BusData;
 uc_8 Stimulus1, LedData1, CommandLine1[16];
 uc_8 Lift1, MovingStatus1; /* Holds motor control info  */
-
- uc_8 button_current, button_previous;
- uc_8 button_store[MAX_BUTTONS];
- int i = 0;
 
 /* Initialisation */
 void liftInit(void)
@@ -161,7 +158,7 @@ void  Delay1(ui_32 DelayConst1){
 	ui_32 i1;
 	for (i1=0;i1<DelayConst1;i1++){}
 }
-
+/*
 //100 ms delay
 void  Delay()
 {
@@ -185,7 +182,7 @@ void turnLEDsON()
 	for (int i = 0; i < sizeof(LEDAddress); ++i)
 	{
 		WriteLed1(LEDAddress[i], LEDon);
-                Delay();
+                Delay2(2);
 	}
 }
 
@@ -194,18 +191,20 @@ void turnLEDsOFF()
 	for (int i = 0; i < sizeof(LEDAddress); ++i)
 	{
 		WriteLed1(LEDAddress[i], LEDoff);
-                Delay();
+                Delay2(2);
 	}
 }
-
+*/
 void moveInitiPos()
 {
 	uc_8 level;
         int c = 0;
+        //lift1Up();
+        if(!floorGet(&level)){
         lift1Down();
-        Delay1(200000);
-        lift1Up();
         while(!floorGet(&level)){}
+        lift1Stop();
+        }
 
         while(c == 0)
         {
@@ -228,31 +227,3 @@ void moveInitiPos()
         lift1Stop();
 }
 
-
-
-void buttonProcess()
-{
-	if(buttonGet(&button_current))
-        {
-          WriteLed1(button_current, LEDon);
-          if (button_current != button_previous)
-          {
-                  button_previous = button_current;
-                  button_store[i] = button_previous;
-                  i++;
-          }	
-        }
-        else 
-        {
-          
-        }
-          
-}
-
-void buttonMoveIndex()
-{
-	for (int i = 0; i < MAX_BUTTONS; ++i)
-	{
-		button_store[i] = button_store[i+1];
-	}
-}

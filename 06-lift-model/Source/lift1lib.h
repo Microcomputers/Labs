@@ -35,8 +35,6 @@ and the MSP430 CLIC3 board. For use in polling based programs.
 #define bottom 0x6
 #define top 0x7
 
-#define MAX_BUTTONS 100
-
 // Initialise functions
 void Initialise(void);
 void BusRead(void);
@@ -74,8 +72,10 @@ enum bool WriteLed1(uc_8 LEDSelect, uc_8 LEDState);
 // Open and close lift door with delays built in
 void OpenDoor1 (void);
 void CloseDoor1 (void);
-
-/* Time delay function */
+void Delay1(ui_32 DelayConst1);
+void moveInitiPos();
+/*
+/* Time delay function 
 // Software time delay for simplicity here.
 // Assume one cycle of the loop takes approximately 0.1microsecs
 void Delay1(ui_32 DelayConst1);
@@ -90,9 +90,6 @@ void turnLEDsOFF();
 
 //detect lift pos on stat up
 //move to specific location
-void moveInitiPos();
-
-//button process
-void buttonProcess();
-void buttonMoveIndex();
+void moveInitiPos();*/
 #endif
+
