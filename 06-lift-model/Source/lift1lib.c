@@ -199,13 +199,14 @@ void moveInitiPos()
 {
 	uc_8 level;
         int c = 0;
-        //lift1Up();
+        lift1Up();
+        Delay1(10000000);
         if(!floorGet(&level)){
         lift1Down();
         while(!floorGet(&level)){}
-        lift1Stop();
         }
-
+        lift1Stop();
+        
         while(c == 0)
         {
           if (level == level2ID)

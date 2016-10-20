@@ -69,7 +69,7 @@ int main()
          
         else {
           cc++;
-          if (cc >= 2500000)
+          if (cc >= 25000000)
           {
             cc=0;
             moveInitiPos();
