@@ -25,6 +25,7 @@
 *.dni
 *.wsdt
 *.wspos
+*.tmp
 
 #file
 */Debug
