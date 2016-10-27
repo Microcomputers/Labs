@@ -310,7 +310,7 @@ void processButton(uc_8 btn)
 void liftbreak(uc_8 id)
 {
 	switch (id)
-    {
+        {
 		case level1ID:
 			if(buttonStore[0] == 1)
 			{
@@ -379,6 +379,6 @@ void liftbreak(uc_8 id)
 				buttonStore[9] = 0;
 			}
 			break;
-    }
+          }
 }
 

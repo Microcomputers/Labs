@@ -33,21 +33,21 @@ int main()
 	moveInitiPos();	//move lift cage to initial pos
 	//Determine to move up or down first time round
 	//wait till a button is pressed
-	while(!buttonGet(&buttonstat)){}
-	if (buttonGet(&buttonstat))
-	{
-		processButton(buttonstat);
-		if (buttonstat > level2ID)
-		{
-			moveUp   = 1;
-			moveDown = 0;
-		}
-		if (buttonstat < level2ID)
-		{
-			moveUp   = 0;
-			moveDown = 1;
-		}	
-	}
+	
+    while(!buttonGet(&buttonstat)){}
+
+    processButton(buttonstat);
+    if (buttonstat >= level2ID)
+    {
+        moveUp   = 1;
+        moveDown = 0;
+    }
+    else if (buttonstat < level2ID)
+    {
+        moveUp   = 0;
+        moveDown = 1;
+    }	
+	
 	while (1)
 	{
 		timer++;
@@ -58,108 +58,51 @@ int main()
 		if(buttonGet(&buttonstat))
 		{
 			timer = 0; //reset timer counter
-			processButton(buttonstat);
-		/*
-		buttonStore[0] = buttonstat;
-		WriteLed1 (buttonStore[0], LEDon); 
-		while(floorID != buttonStore[0])
-		{
-		if(buttonStore[0] > floorID)
-		{
-		lift1Up();
-		while(floorGet(&floorID)==false){}
-		}
-
-		if(buttonStore[0] < floorID)
-		{
-		lift1Down();
-		while(floorGet(&floorID)==false){}
-		}
-		}
-		lift1Stop();
-		WriteLed1 (buttonStore[0], LEDoff); 
-		*/
-		}
+			processButton(buttonstat);          
+        }
 		else 
 		{
+            processButton(buttonstat);
 			if (timer >= timeout)
 			{
 				moveInitiPos();
 				timer = 0;
 			}
 		}
-		if (moveUp)
-		{
-			lift1Up();
-			while(floorGet(&floorID)==false){}
-			liftbreak(floorID);
-		}
-		else if (moveDown)
-		{
-			lift1Down();
-			while(floorGet(&floorID)==false){}
-			liftbreak(floorID);    
-		}
-                BusAddress = Lift1Address;
-                BusRead();
-                floorID = (((BusData >> 1) & floorMask & 0x06));
-		if (floorID == bottom)
-		{
-			moveUp   = 1;
-			moveDown = 0;
-		}
-		else if (floorID == top)
-		{
-			moveUp   = 0;
-			moveDown = 1;
-		}
+                      
+        if (moveUp)
+        {
+            lift1Up();
+            while(floorGet(&floorID)==false)
+            {
+                processButton(buttonstat);//missing buttonGet function
+            }
+            liftbreak(floorID);
+        }
+        else if (moveDown)
+    	{
+            lift1Down();
+            while(floorGet(&floorID)==false)
+            {
+                processButton(buttonstat);
+            }
+            liftbreak(floorID);    
+        }
+                
+        BusAddress = Lift1Address;
+        BusRead();
+        floorID = (((BusData >> 1) & floorMask & 0x06));
+        if (floorID == bottom)
+        {
+            moveUp   = 1;
+            moveDown = 0;
+        }
+        else if (floorID == top)
+        {
+            moveUp   = 0;
+            moveDown = 1;
+        }
+
 	}
 }
     
-      
-      
-      
-      
-      
-      
-	/*
-	if(floorGet(&current_lvl))
-	{
-		
-	}
-	*/
-		/*if(buttonGet(&buttonstat))
-		{
-			WriteLed1(buttonstat, LEDon);
-			if (buttonstat%2==0)
-			{
-				lift1Up();
-				//Delay1(25000000);
-				//lift1Stop();
-
-				while(!floorGet(&current_lvl)){}
-				lift1Stop();
-			}
-			else
-			{
-				lift1Down();
-				//Delay1(25000000);
-				//lift1Stop();
-				while(!floorGet(&current_lvl)){}
-				lift1Stop();
-			}
-		}*/
-	//Delay1(25000000);
-	//WriteLed1(buttonstat, LEDoff);
-      
-      //WriteLed1(7, LEDon);
-    
-
-
-/////////////////////////////////////////////////////
-
-/*void  Delay1(ui_32 DelayConst1){
-	ui_32 i1;
-	for (i1=0;i1<DelayConst1;i1++){}
-}
-*/
