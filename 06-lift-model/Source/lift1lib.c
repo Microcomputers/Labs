@@ -211,13 +211,13 @@ void moveInitiPos()
         {
           if (level == level2ID)
           {
-             lift1Stop();
-             c++;
+            lift1Stop();
+            c++;
           }
-          else if ( level > level2ID)
+          else if (level > level2ID)
           {
-             lift1Down();
-             while(!floorGet(&level)){}
+            lift1Down();
+            while(!floorGet(&level)){}
           }
           else if (level < level2ID)
           {
@@ -226,5 +226,159 @@ void moveInitiPos()
           }
         }
         lift1Stop();
+}
+
+//100 ms delay
+void  Delay()
+{
+	ui_32 DelayConst1 = 1000000;
+	ui_32 i1;
+	for (i1=0;i1<DelayConst1;i1++){}
+}
+
+
+void Delay2(int count)
+{
+	for (int j = 0; j < count; ++j)
+	{
+		Delay();
+	}
+}
+
+//int LEDAddress[] = {0x0, 0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8, 0x9, 0xa, 0xb, 0xc, 0xd};
+
+void turnLEDsON()
+{
+	for (int i = 0; i < 12; ++i)
+	{
+		WriteLed1(i, LEDon);
+        Delay2(2);
+	}
+}
+
+void turnLEDsOFF()
+{
+	for (int i = 12; i >= 0; i--)
+	{
+		WriteLed1(i, LEDoff);
+        Delay2(2);
+	}
+}
+
+//extern uc_8 buttonStore[10];
+static uc_8 buttonStore[10] = {0,0,0,0,0,0,0,0,0,0};
+extern uc_8 buttonQueue[20];
+
+void processButton(uc_8 btn)
+{
+	WriteLed1(btn, LEDon);
+	switch (btn)
+	{
+		case floor1: // 1
+			buttonStore[0] = 1;
+			break;
+		case floor2: // 2
+			buttonStore[1] = 1;
+			break;        
+		case floor3: // 3
+			buttonStore[2] = 1;
+			break;
+		case floor4: // 4
+			buttonStore[3] = 1;
+			break;
+		case floor1Up: // 1 up
+			buttonStore[4] = 1;
+			break;
+		case floor2Down: // 2 down
+			buttonStore[5] = 1;
+			break;
+		case floor2Up: // 2 up
+			buttonStore[6] = 1;
+			break;
+		case floor3Down: // 3 down
+			buttonStore[7] = 1;
+			break;
+		case floor3Up: // 3 up
+			buttonStore[8] = 1;
+			break;
+		case floor4Down: // 4 down
+			buttonStore[9] = 1;
+			break;
+	}
+}
+
+void liftbreak(uc_8 id)
+{
+	switch (id)
+        {
+		case level1ID:
+			if(buttonStore[0] == 1)
+			{
+				lift1Stop();
+				WriteLed1(floor1, LEDoff);
+				buttonStore[0] = 0;
+			}
+			if(buttonStore[4] == 1)
+			{
+				lift1Stop();
+				WriteLed1(floor1Up, LEDoff);
+				buttonStore[4] = 0;
+			}
+			break;
+		case level2ID:
+			if(buttonStore[1] == 1)
+			{
+				lift1Stop();
+				WriteLed1(floor2, LEDoff);
+				buttonStore[1] = 0;
+			}
+			if(buttonStore[5] == 1)
+			{
+				lift1Stop();
+				WriteLed1(floor2Down, LEDoff);
+				buttonStore[5] = 0;
+			}
+			if(buttonStore[6] == 1)
+			{
+				lift1Stop();
+				WriteLed1(floor2Up, LEDoff);
+				buttonStore[6] = 0;
+			}  
+			break;
+		case level3ID:
+			if(buttonStore[2] == 1)
+			{
+				lift1Stop();
+				WriteLed1(floor3, LEDoff);
+				buttonStore[2] = 0;
+			}
+			if(buttonStore[7] == 1)
+			{
+				lift1Stop();
+				WriteLed1(floor3Down, LEDoff);
+				buttonStore[7] = 0;
+			}
+			if(buttonStore[8] == 1)
+			{
+				lift1Stop();
+				WriteLed1(floor3Up, LEDoff);
+				buttonStore[8] = 0;
+			}  
+			break;
+		case level4ID:
+			if(buttonStore[3] == 1)
+			{
+				lift1Stop();
+				WriteLed1(floor4, LEDoff);
+				buttonStore[3] = 0;
+			}
+			if(buttonStore[9] == 1)
+			{
+				lift1Stop();
+				WriteLed1(floor4Down, LEDoff);
+				buttonStore[9] = 0;
+			}
+			break;
+          }
 }
 

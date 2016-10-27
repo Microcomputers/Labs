@@ -8,32 +8,47 @@ and the MSP430 CLIC3 board. For use in polling based programs.
 #include "clic3.h"
 
  /* ---- Clic3 Magic Numbers ----- */
-#define bit7Set   0x080
-#define floorMask 0x007
+#define bit7Set   		0x080
+#define floorMask 		0x007
 
-#define floorBit  0x001
-#define buttonBit 0x002
+#define floorBit  		0x001
+#define buttonBit 		0x002
 
-#define motorUp   0x080
-#define motorDown 0x040
-#define motorStop 0x000
+#define motorUp   		0x080
+#define motorDown 		0x040
+#define motorStop 		0x000
 
 
-#define LEDLatchOn  0x010
-#define LEDLatchOff 0x0EF
-#define LEDMask   0x00F
+#define LEDLatchOn    	0x010
+#define LEDLatchOff   	0x0EF
+#define LEDMask       	0x00F
 
-#define Lift1Address (0x4020)
+#define Lift1Address  	0x4020
 
-#define LEDon 0x20
-#define LEDoff 0x00
+#define LEDon  			0x20
+#define LEDoff 			0x00
 
-#define level1ID 0x0
-#define level2ID 0x1
-#define level3ID 0x2
-#define level4ID 0x3
-#define bottom 0x6
-#define top 0x7
+//floor IDs
+#define level1ID 		0x0
+#define level2ID 		0x1
+#define level3ID 		0x2
+#define level4ID 		0x3
+#define bottom   		0x6
+#define top 	 		0x7
+
+//button IDs
+#define floor1 			0x0
+#define floor2 			0x1
+#define floor3 			0x2
+#define floor4 			0x3
+#define doorClose 		0x6
+#define doorOpen 		0x7
+#define floor1Up 		0x8
+#define floor2Down 		0x9
+#define floor2Up 		0xA
+#define floor3Down 		0xB
+#define floor3Up 		0xC
+#define floor4Down 		0xD
 
 // Initialise functions
 void Initialise(void);
@@ -49,6 +64,17 @@ enum bool lift1Up (void);
 enum bool lift1Down (void);
 enum bool lift1Stop (void);
 
+/* Function to switch a specific LED on or off 
+LEDSelect must be in the range 0x00 to 0x0F (or 0 to 15 decimal) 
+LEDState can take two values LEDOn or LEDOff 
+Always returns true 
+*/
+enum bool WriteLed1(uc_8 LEDSelect, uc_8 LEDState);
+
+// Open and close lift door with delays built in
+void OpenDoor1 (void);
+void CloseDoor1 (void);
+
 /* Function to check if a button has been pushed.
 Returns true if a button has been pushed and with the button ID
 otherwise returns false.
@@ -61,24 +87,13 @@ otherwise returns false.
 */
 enum bool floorGet (uc_8 *floorID);
 
-/* Function to switch a specific LED on or off 
-LEDSelect must be in the range 0x00 to 0x0F (or 0 to 15 decimal) 
-LEDState can take two values LEDOn or LEDOff 
-Always returns true 
-*/
-
-enum bool WriteLed1(uc_8 LEDSelect, uc_8 LEDState);
-
-// Open and close lift door with delays built in
-void OpenDoor1 (void);
-void CloseDoor1 (void);
 void Delay1(ui_32 DelayConst1);
 void moveInitiPos();
-/*
-/* Time delay function 
+
+/* Time delay function */
 // Software time delay for simplicity here.
 // Assume one cycle of the loop takes approximately 0.1microsecs
-void Delay1(ui_32 DelayConst1);
+//void Delay1(ui_32 DelayConst1);
 void Delay();
 void Delay2(int count);
 
@@ -88,8 +103,8 @@ void turnLEDsON();
 // Turn LEDs OFF, on start up
 void turnLEDsOFF();
 
-//detect lift pos on stat up
-//move to specific location
-void moveInitiPos();*/
+void processButton(uc_8 lvl);
+void liftbreak(uc_8 id);
+
 #endif
 
